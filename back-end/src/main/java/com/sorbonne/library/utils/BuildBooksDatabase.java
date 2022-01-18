@@ -30,10 +30,10 @@ public class BuildBooksDatabase {
 
     public ArrayList<Integer> buildDatabase(int nbBooks) throws IOException, JSONException {
         ArrayList<Integer> booksIds= new ArrayList<Integer>();
-        int cpt=1;
+        int i = 1;
         while (booksIds.size()<nbBooks){
-            booksIds.addAll(auxBuildBooksDatabase(cpt,nbBooks));
-            cpt++;
+            booksIds.addAll(auxBuildBooksDatabase(i, nbBooks));
+            i++;
         }
         return booksIds;
     }
