@@ -11,13 +11,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.*;
-import java.net.URL;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Slf4j
@@ -32,7 +27,6 @@ public class BuildBooksDatabase {
         BuildBooksDatabase b =new BuildBooksDatabase();
         System.out.println(b.buildDatabase(2).size());
     }
-
 
     public ArrayList<Integer> buildDatabase(int nbBooks) throws IOException, JSONException {
         ArrayList<Integer> booksIds= new ArrayList<Integer>();
@@ -108,6 +102,5 @@ public class BuildBooksDatabase {
         String dir= absolutePathForDownload+id+".txt";
         FileUtils.writeStringToFile(new File(dir), str);
     }
-
 }
 
