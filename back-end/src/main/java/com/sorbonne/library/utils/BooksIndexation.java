@@ -6,22 +6,20 @@ import lombok.extern.slf4j.Slf4j;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.Paths;
+import static com.sorbonne.library.config.Constants.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
 @Slf4j
 public class BooksIndexation {
-    private static String absolutePath = Paths.get("").toAbsolutePath()+
-            "/src/main/java/com/sorbonne/library/";
 
     public static void main(String[] args) throws Exception {
         indexBooksDatabase();
     }
 
     public static void indexBooksDatabase() throws Exception {
-        File dataBaseFolder = new File (absolutePath+"Books");
+        File dataBaseFolder = new File (ABSOLUTE_PATH+BOOKS);
         int i = 1;
         for (final File book : dataBaseFolder.listFiles()) {
             System.out.println("Indexation en cours : "+i+"/"+dataBaseFolder.listFiles().length);
@@ -33,7 +31,7 @@ public class BooksIndexation {
 
     public static void indexBook(int id) throws IOException {
         Map<String, Pair<Integer, Integer>> index = new HashMap<String,Pair<Integer, Integer>>();
-        File bookFile = new File(absolutePath+"Books/"+id+".txt");
+        File bookFile = new File(ABSOLUTE_PATH+BOOKS+id+TXT_EXTENSION);
         Scanner book = new Scanner(bookFile);
         while (book.hasNext()) {
             String word =book.next().replaceAll("\\p{Punct}", "")
@@ -58,7 +56,7 @@ public class BooksIndexation {
     private static void writeIntoFile(Map<String,Pair<Integer, Integer>> index, int id)
             throws IOException
     {
-        FileWriter writer = new FileWriter(absolutePath+"IndexedBooks/"+id+".dex");
+        FileWriter writer = new FileWriter(ABSOLUTE_PATH+INDEXED_BOOKS+id+DEX_EXTENSION);
         index.forEach((key,value) -> {
             try {
                 writer.write(key + " : [" + id + " : " + value.getValue() + "]" + "\n");

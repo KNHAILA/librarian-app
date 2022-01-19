@@ -11,17 +11,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.*;
-import java.nio.file.Paths;
+import static com.sorbonne.library.config.Constants.*;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Slf4j
 public class BuildBooksDatabase {
-    private static String absolutePathForDownload = Paths.get("").toAbsolutePath()+
-            "/src/main/java/com/sorbonne/library/books/";
-    private static String gutendexLink = "http://gutendex.com/books/";
-    private static String gutenbergLink = "http://www.gutenberg.org/files/";
-
 
     public static void main(String[] args) throws IOException, JSONException {
         BuildBooksDatabase b =new BuildBooksDatabase();
@@ -69,7 +64,7 @@ public class BuildBooksDatabase {
 
     private ArrayList<Integer> auxBuildBooksDatabase(int page,int nbbooks) throws IOException, JSONException {
         ArrayList<Integer> booksIds= new ArrayList<Integer>();
-        String content = getHtmlPageWithPageId(gutendexLink,page);
+        String content = getHtmlPageWithPageId(GUTENDEX_LINK,page);
         if(content != null) {
             JSONObject contentJson = new JSONObject(content);
             JSONArray jsonArray = contentJson.getJSONArray("results");
@@ -77,7 +72,7 @@ public class BuildBooksDatabase {
                 AtomicInteger id = new AtomicInteger(jsonArray.getJSONObject(i).getInt("id"));
                 if (booksIds.size() >= nbbooks)
                     return booksIds;
-                String url = gutenbergLink+id+"/"+id+"-0.txt";
+                String url = GUTENBERG_LINK+id+"/"+id+"-0.txt";
                 String contentBook = getHtmlPage(url);
                 if (countWordsInBook(contentBook)) {
                     booksIds.add(id.intValue());
@@ -99,7 +94,7 @@ public class BuildBooksDatabase {
     }
 
     public static void downloadBook(String str,int id) throws IOException {
-        String dir= absolutePathForDownload+id+".txt";
+        String dir= ABSOLUTE_PATH+BOOKS+id+TXT_EXTENSION;
         FileUtils.writeStringToFile(new File(dir), str);
     }
 }
