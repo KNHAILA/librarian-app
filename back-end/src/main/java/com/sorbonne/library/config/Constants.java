@@ -17,7 +17,7 @@ public class Constants {
     public static final String TXT_EXTENSION = ".txt";
     public static final String INDEXED_BOOKS = "IndexedBooks/";
     public static final String DEX_EXTENSION = ".dex";
-    public static final String INDEXED_MAP_BOOKS = "IndexedMapBooks/";
+    public static final String INDEXED_MAP_BOOKS = "indexedMapBooks/";
     public static final String MAP_EXTENSION = ".map";
     public static String GUTENDEX_LINK = "http://gutendex.com/books/";
     public static String GUTENBERG_LINK = "http://www.gutenberg.org/files/";

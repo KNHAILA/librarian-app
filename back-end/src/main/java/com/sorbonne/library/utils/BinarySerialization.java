@@ -6,6 +6,7 @@ import com.esotericsoftware.kryo.io.Output;
 import com.esotericsoftware.kryo.serializers.MapSerializer;
 import static com.sorbonne.library.config.Constants.*;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -23,7 +24,7 @@ public class BinarySerialization {
         output.close();
     }
 
-    public static HashMap<String,Integer> loadBookIndexation(String file) throws IOException {
+    public static HashMap<String,Integer> loadBookIndexation(File file) throws IOException {
         Kryo kryo = new Kryo();
         kryo.register(HashMap.class, new MapSerializer());
         Input input = new Input(new FileInputStream(file));

@@ -1,5 +1,7 @@
 package com.sorbonne.library.utils;
 
+import com.google.gson.Gson;
+import com.sorbonne.library.model.Book;
 import kong.unirest.HttpResponse;
 import kong.unirest.JsonNode;
 import kong.unirest.Unirest;
@@ -13,6 +15,7 @@ import org.json.JSONObject;
 import java.io.*;
 import static com.sorbonne.library.config.Constants.*;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Slf4j
@@ -20,7 +23,7 @@ public class BuildBooksDatabase {
 
     public static void main(String[] args) throws IOException, JSONException {
         BuildBooksDatabase b =new BuildBooksDatabase();
-        System.out.println(b.buildDatabase(2).size());
+        System.out.println(b.buildDatabase(4).size());
     }
 
     public ArrayList<Integer> buildDatabase(int nbBooks) throws IOException, JSONException {
@@ -64,19 +67,28 @@ public class BuildBooksDatabase {
 
     private ArrayList<Integer> auxBuildBooksDatabase(int page,int nbbooks) throws IOException, JSONException {
         ArrayList<Integer> booksIds= new ArrayList<Integer>();
+        List<Book> books = new ArrayList<>();
         String content = getHtmlPageWithPageId(GUTENDEX_LINK,page);
         if(content != null) {
             JSONObject contentJson = new JSONObject(content);
             JSONArray jsonArray = contentJson.getJSONArray("results");
             for (int i = 0; i < jsonArray.length(); i++) {
-                AtomicInteger id = new AtomicInteger(jsonArray.getJSONObject(i).getInt("id"));
-                if (booksIds.size() >= nbbooks)
+                int id = jsonArray.getJSONObject(i).getInt("id");
+                String title = jsonArray.getJSONObject(i).getString("title");
+                String authors = jsonArray.getJSONObject(i).getJSONArray("authors").getJSONObject(0).getString("name");
+                System.out.println(id+"::::"+title+":::"+authors);
+                if (booksIds.size() >= nbbooks) {
+                    saveBooksInfo(books);
+                    System.out.println(books.toString());
                     return booksIds;
+                }
                 String url = GUTENBERG_LINK+id+"/"+id+"-0.txt";
+                System.out.println(url);
                 String contentBook = getHtmlPage(url);
                 if (countWordsInBook(contentBook)) {
-                    booksIds.add(id.intValue());
-                    downloadBook( contentBook, id.intValue());
+                    books.add(new Book(id,title,authors));
+                    booksIds.add(id);
+                    downloadBook( contentBook, id);
                 }
             }
         }
@@ -96,6 +108,18 @@ public class BuildBooksDatabase {
     public static void downloadBook(String str,int id) throws IOException {
         String dir= ABSOLUTE_PATH+BOOKS+id+TXT_EXTENSION;
         FileUtils.writeStringToFile(new File(dir), str);
+    }
+
+    public static void saveBooksInfo(List<Book> books)
+    {
+        try {
+            FileWriter file = new FileWriter(ABSOLUTE_PATH+"config/info.json");
+            file.write(new Gson().toJson(books));
+            file.flush();
+            file.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
 
