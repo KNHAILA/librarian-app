@@ -86,7 +86,7 @@ public class BuildBooksDatabase {
                 System.out.println(url);
                 String contentBook = getHtmlPage(url);
                 if (countWordsInBook(contentBook)) {
-                    books.add(new Book(id,title,authors));
+                    books.add(new Book(id,title,authors, "https://www.gutenberg.org/cache/epub/"+id+"/pg"+id+".cover.medium.jpg"));
                     booksIds.add(id);
                     downloadBook( contentBook, id);
                 }

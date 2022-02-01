@@ -5,7 +5,7 @@ import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.sorbonne.library.model.Book;
 import com.sorbonne.library.utils.BinarySerialization;
-import com.sorbonne.library.utils.Treatments;
+import com.sorbonne.library.utils.SortingTreatments;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -39,7 +39,7 @@ public class ClassicSearchImp implements ClassicSearch {
             }
         }
         List<Book> booksFound = new ArrayList<>();
-        booksFound.addAll(Treatments.SortedMapDescending(getBooksInfo(books)).keySet());
+        booksFound.addAll(SortingTreatments.SortedMapDescending(getBooksInfo(books)).keySet());
         return booksFound;
     }
 

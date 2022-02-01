@@ -10,7 +10,7 @@ import com.sorbonne.library.regexTreatments.NFA;
 import com.sorbonne.library.regexTreatments.RegEx;
 import com.sorbonne.library.regexTreatments.RegExTree;
 import com.sorbonne.library.utils.BinarySerialization;
-import com.sorbonne.library.utils.Treatments;
+import com.sorbonne.library.utils.SortingTreatments;
 import javafx.util.Pair;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -84,7 +84,7 @@ public class AdvancedSearchImp implements AdvancedSearch{
         }
 
         List<Book> booksFound = new ArrayList<>();
-        booksFound.addAll(Treatments.sortedBooksFromKeywords(getBooksInfo(books)).keySet());
+        booksFound.addAll(SortingTreatments.sortedBooksFromKeywords(getBooksInfo(books)).keySet());
         return booksFound;
     }
 

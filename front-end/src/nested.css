@@ -1,0 +1,14 @@
+.services{
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-top: 50px;
+    display: flex;
+    
+}
+.list{
+    width: 100%;
+}
+.btns{
+    margin:20px ;
+    align-self: flex-end;
+}
