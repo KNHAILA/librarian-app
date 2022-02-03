@@ -3,9 +3,13 @@ package com.sorbonne.library.service;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
+import com.sorbonne.library.jaccardTreatments.JaccardAlgorithms;
 import com.sorbonne.library.model.Book;
+import com.sorbonne.library.model.Result;
 import com.sorbonne.library.utils.BinarySerialization;
+import com.sorbonne.library.utils.BooksInformation;
 import com.sorbonne.library.utils.SortingTreatments;
+import com.sorbonne.library.utils.SuggestionTreatments;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +29,7 @@ public class ClassicSearchImp implements ClassicSearch {
     @Override
     public List<Book> classicSearch(String word) {
         HashMap<Integer, Integer> books = new HashMap<>();
+        //Result result= new Result();
         File folder = new File(ABSOLUTE_PATH + INDEXED_MAP_BOOKS);
         for (final File indexBook : folder.listFiles()) {
             int id = Integer.parseInt(indexBook.getName().replace(".map", "")); //Id of the book
@@ -39,28 +44,17 @@ public class ClassicSearchImp implements ClassicSearch {
             }
         }
         List<Book> booksFound = new ArrayList<>();
-        booksFound.addAll(SortingTreatments.SortedMapDescending(getBooksInfo(books)).keySet());
+        booksFound.addAll(SortingTreatments.SortedMapDescending(BooksInformation.getBooksInfo(books)).keySet());
+
+        //result.setResult(booksFound);
+        //result.setSuggestion(BooksInformation.getBooksInfoById(SuggestionTreatments.suggestion(books.keySet())));
+
+        //return result;
         return booksFound;
     }
-
-    public static HashMap<Book, Integer> getBooksInfo(Map<Integer, Integer>  booksId) {
-        HashMap<Book, Integer> booksSearched = new HashMap<>();
-        Type BOOK_TYPE = new TypeToken<List<Book>>() {
-        }.getType();
-        Gson gson = new Gson();
-        JsonReader reader = null;
-        try {
-            reader = new JsonReader(new FileReader(ABSOLUTE_PATH + "config/info.json"));
-            List<Book> books = gson.fromJson(reader, BOOK_TYPE);
-            for(Book book: books)
-            {
-                if(booksId.containsKey(book.getId()))
-                    booksSearched.put(book,booksId.get(book.getId()));
-            }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        return booksSearched;
-    }
+    /*
+    public static Map<Integer,Double> classement(Map<Integer,Integer> books) throws Exception {
+        return JaccardAlgorithms.closenessCentrality(books.keySet());
+    }*/
 }
 

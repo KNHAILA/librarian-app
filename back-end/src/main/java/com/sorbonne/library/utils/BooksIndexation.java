@@ -20,12 +20,9 @@ public class BooksIndexation {
 
     public static void indexBooksDatabase() throws Exception {
         File dataBaseFolder = new File (ABSOLUTE_PATH+BOOKS);
-        int i = 1;
         for (final File book : dataBaseFolder.listFiles()) {
-            System.out.println("Indexation en cours : "+i+"/"+dataBaseFolder.listFiles().length);
-            i++;
-            int id = Integer.parseInt(book.getName().replace(".txt",""));
-                indexBook(id);
+            int id = Integer.parseInt(book.getName().replace(TXT_EXTENSION,""));
+            indexBook(id);
         }
     }
 
