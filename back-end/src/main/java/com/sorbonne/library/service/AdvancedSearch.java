@@ -1,9 +1,10 @@
 package com.sorbonne.library.service;
 
 import com.sorbonne.library.model.Book;
+import com.sorbonne.library.model.Result;
 
 import java.util.List;
 
 public interface AdvancedSearch {
-    List<Book> searchBooksByRegex(String regex);
+    Result searchBooksByRegex(String regex);
 }

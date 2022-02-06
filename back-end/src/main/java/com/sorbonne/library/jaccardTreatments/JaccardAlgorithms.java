@@ -22,9 +22,6 @@ public class JaccardAlgorithms {
 
         JaccardGraph g = createVertexForAllIndexBooks(0.7,matrix);
         BinarySerialization.storeGraph(g);
-
-
-
     }
 
     public static JaccardGraph createVertexForAllIndexBooks(double constanteJaccard,

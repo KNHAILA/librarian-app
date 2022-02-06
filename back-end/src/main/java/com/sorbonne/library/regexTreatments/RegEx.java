@@ -21,6 +21,7 @@ public class RegEx {
 	static int MATRIX_BLOCK_SIZE = 0;
 
 
+
 	// CONSTRUCTOR
 	public RegEx() {
 	}
@@ -416,5 +417,10 @@ public class RegEx {
 			}
 			return res;
 		}
+
+	public static void initializeRegEx(){
+		MATRIX_SIZE = 0;
+		MATRIX_BLOCK_SIZE = 0;
+	}
 
 }

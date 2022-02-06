@@ -19,9 +19,9 @@ export default function Acceuil() {
 
     return (
         <div className="Acceuil">
-            <h1>Welcome to our final project : Library Search Engine</h1>
+            <h1>Bienvenue dans notre projet final : Moteur de recherche d'une bibliothèque</h1>
             <img alt="" src={libraryImage} />
-            <h2> Our library contain more than 14,000 free eBooks</h2>
+            <h2>Notre bibliothèque contient plus de 16,000 livres électroniques gratuits</h2>
 
             <ImageList cols={4}>
                 {bookList.map((item) => (

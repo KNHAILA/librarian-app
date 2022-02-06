@@ -1,6 +1,7 @@
 package com.sorbonne.library.controller;
 
 import com.sorbonne.library.model.Book;
+import com.sorbonne.library.model.Result;
 import com.sorbonne.library.service.ClassicSearch;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,7 @@ public class ClassicSearchController {
 
     @ApiOperation(value = "Returns the books that contains the word")
     @GetMapping("/list")
-    public List<Book> search(@RequestParam String name) throws Exception {
+    public Result search(@RequestParam String name) throws Exception {
        return classicSearch.classicSearch(name);
     }
 }

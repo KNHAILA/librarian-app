@@ -22,20 +22,21 @@ public class DFA {
 	 * Array which contain each block of DFA
 	 */
 	;
-	private static int[] returnValuesNDFA = new int[RegEx.MATRIX_BLOCK_SIZE];
+	private int[] returnValuesNDFA = new int[RegEx.MATRIX_BLOCK_SIZE];
 	/**
 	 * Array which contain accept state in final result
 	 */
 	;
-	public static int[] acceptArray = new int[RegEx.MATRIX_SIZE];
-	
+	public int[] acceptArray = new int[RegEx.MATRIX_SIZE];
+
+
 
 	/**
 	 * <p>
 	 * This function allow to convert NFA to DFA
 	 * </p>
 	 */
-	public static ArrayList<int[][][]> makeDFA(int[][][] mainMatrix, int[][][] matInitTermEps) {
+	public ArrayList<int[][][]> makeDFA(int[][][] mainMatrix, int[][][] matInitTermEps) {
 
 		int[][][] DFAASCIImatrix = new int[RegEx.MATRIX_SIZE][256][RegEx.MATRIX_BLOCK_SIZE];
 		int[][][] nodesMatrix = new int[RegEx.MATRIX_SIZE + 1][1][RegEx.MATRIX_BLOCK_SIZE];
@@ -127,7 +128,7 @@ public class DFA {
 	 * This function allow to get initial state to start making DFA
 	 * </p>
 	 */
-	static private int[] DFAinitialState(int[][][] mainMatrix, int[][][] matInitTermEps) {
+	private int[] DFAinitialState(int[][][] mainMatrix, int[][][] matInitTermEps) {
 
 		int[] output = new int[RegEx.MATRIX_BLOCK_SIZE];
 		Operation.add(output, traverseNDFA(mainMatrix, matInitTermEps, 0, 0, true));
@@ -166,29 +167,30 @@ public class DFA {
 	 * Array which contain states already traversed in each traverse 
 	 */
 	;
-	private static boolean[] chekedStates = new boolean[RegEx.MATRIX_SIZE];
+	private boolean[] chekedStates = new boolean[RegEx.MATRIX_SIZE];
 	/**
 	 * Boolean which check termination state in each traverse
 	 */
 	;
-	private static boolean achiveTerminaisonState = false;
+	private boolean achiveTerminaisonState = false;
 	/**
 	 * Integer which contain DFA length
 	 */
 	;
-	private static int indexNDFA = 0;
+	private int indexNDFA = 0;
 	/**
 	 * Integer which contain NDF length
 	 */
 	;
-	private static int NDFALenght = 0;
+	private int NDFALenght = 0;
+
 
 	/**
 	 * <p>
 	 * This function allow to traverse DFA
 	 * </p>
 	 */
-	private static int[] traverseNDFA(int[][][] mainMatrix, int[][][] matInitTermEps, int cursor, int ascci,
+	private int[] traverseNDFA(int[][][] mainMatrix, int[][][] matInitTermEps, int cursor, int ascci,
 			boolean justCheckEpsilon) {
 
 		if (!justCheckEpsilon) {
@@ -228,7 +230,7 @@ public class DFA {
 	 * This function allow to minimize DFA
 	 * </p>
 	 */
-	public static int[][] simplifyNDFA(ArrayList<int[][][]> result) {
+	public int[][] simplifyNDFA(ArrayList<int[][][]> result) {
 
 		int[][][] nodes = result.get(0);
 		int[][][] dfa = result.get(1);
@@ -250,5 +252,14 @@ public class DFA {
 			}
 		}
 		return retur;
+	}
+
+	public void initializeDFA(){
+		returnValuesNDFA = new int[RegEx.MATRIX_BLOCK_SIZE];
+		acceptArray = new int[RegEx.MATRIX_SIZE];
+		chekedStates = new boolean[RegEx.MATRIX_SIZE];
+		achiveTerminaisonState = false;
+		indexNDFA = 0;
+		NDFALenght = 0;
 	}
 }

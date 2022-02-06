@@ -16,14 +16,13 @@ import java.io.*;
 import static com.sorbonne.library.config.Constants.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 
 @Slf4j
 public class BuildBooksDatabase {
 
     public static void main(String[] args) throws IOException, JSONException {
         BuildBooksDatabase b =new BuildBooksDatabase();
-        System.out.println(b.buildDatabase(4).size());
+        System.out.println(b.buildDatabase(10).size());
     }
 
     public ArrayList<Integer> buildDatabase(int nbBooks) throws IOException, JSONException {

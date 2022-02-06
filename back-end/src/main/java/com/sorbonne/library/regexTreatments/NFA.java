@@ -15,37 +15,37 @@ public class NFA {
 	/**
 	 * Matrix which contain transition using a character
 	 */;
-	public static int[][][] matASCI = new int[RegEx.MATRIX_SIZE][256][1];
+	public int[][][] matASCI = new int[RegEx.MATRIX_SIZE][256][1];
 	/**
 	 * Matrix which contain initial state, accepted state and epsilons transitions
 	 */;
-	public static int[][][] matInitTermEps = new int[RegEx.MATRIX_SIZE][3][2];
+	public int[][][] matInitTermEps = new int[RegEx.MATRIX_SIZE][3][2];
 	/**
 	 * Number of statesin nfa
 	 */;
-	public static int stateNum = 0;
+	public int stateNum = 0;
 	/**
 	 * Accepted State
 	 */;
-	public static int finalState = -1;
+	public int finalState = -1;
 	/**
 	 * Alternance Accepted State
 	 */;
-	public static int finalAlternState = -1;
+	public int finalAlternState = -1;
 	/**
 	 * This attribute is used to determine if a state is the last one or not
 	 */;
-	public static boolean lastState = false;
+	public boolean lastState = false;
 	/**
 	 * This attribute is used to determine what is the last operation
 	 */;
-	public static int lastOperation = -1;
+	public int lastOperation = -1;
 
 	/**
 	 * <p> This function allow to construct a NFA from tree regex </p>
 	 * @param regex Tree
 	 */
-	public static int buildNfaMatrix(RegExTree tree) {
+	public int buildNfaMatrix(RegExTree tree) {
 		if(tree.getRoot()<256)
 		{
 			matInitTermEps[stateNum][0][0] = 1;
@@ -69,7 +69,7 @@ public class NFA {
 	 * @param regex Tree
 	 */
 	
-	public static int processDot(RegExTree tree) {
+	public int processDot(RegExTree tree) {
 		for (int i = 0; i < 255; i++)
 			matASCI[stateNum][i][0] = stateNum + 1;
 		stateNum += 1;
@@ -81,7 +81,7 @@ public class NFA {
 	 * @param regex Tree
 	 */
 	
-	public static int processConcat(RegExTree tree) {
+	public int processConcat(RegExTree tree) {
 		if (stateNum == 0) {
 			matInitTermEps[stateNum][2][0] = stateNum + 1;
 			stateNum += 1;
@@ -113,7 +113,7 @@ public class NFA {
 	 * <p> This function allow to construct a NFA of The Closure </p>
 	 * @param regex Tree
 	 */
-	public static int processEtoile(RegExTree tree) {
+	public int processEtoile(RegExTree tree) {
 		int l = stateNum;
 		if (stateNum > 0) {
 			matInitTermEps[stateNum][2][0] = ++stateNum;
@@ -139,7 +139,7 @@ public class NFA {
 	 * @param regex Tree
 	 */
 	
-	public static int processAltern(RegExTree tree) {
+	public int processAltern(RegExTree tree) {
 		int l = stateNum;
 		if (stateNum == 0)
 			lastState = true;
@@ -164,7 +164,7 @@ public class NFA {
 	 * <p> This function allow to construct a ASCII character </p>
 	 * @param regex Tree
 	 */
-	public static int processChar(RegExTree tree)
+	public int processChar(RegExTree tree)
 	{
 		matASCI[stateNum][tree.getRoot()][0] = ++stateNum;
 		return 1;
@@ -174,7 +174,7 @@ public class NFA {
 	 * <p> This function to map the regexTree and construct the nfa according to regexTree Root  </p>
 	 * @param regex Tree
 	 */
-	public static int processOperation(RegExTree tree) {
+	public int processOperation(RegExTree tree) {
 		if (tree.getRoot() < 256) { return processChar(tree); }
 		if (tree.getRoot() == RegEx.DOT) { return processDot(tree); }
 		if (tree.getRoot() == RegEx.CONCAT) { return processConcat(tree); }
@@ -182,6 +182,17 @@ public class NFA {
 		if (tree.getRoot() == RegEx.ALTERN) { return processAltern(tree); }
 		return 1;
 	}
-
-
+	public  void initializeNFA(){
+		matASCI =new int[RegEx.MATRIX_SIZE][256][1];
+		matInitTermEps=null;
+		matInitTermEps = new int[RegEx.MATRIX_SIZE][3][2];
+		int[][][] j = new int[5][5][5];
+		j[0][0][0] = 0;
+		System.out.println(j[0][0][0]);
+		stateNum = 0;
+		finalState = -1;
+		finalAlternState = -1;
+		lastState = false;
+		lastOperation = -1;
+	}
 }

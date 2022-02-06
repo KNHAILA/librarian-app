@@ -86,6 +86,7 @@ const useStyles = makeStyles((theme) => ({
 export default function RechercheClassique() {
   const classes = useStyles();
   const [bookList, setBookList] = React.useState()
+  const [suggestionList, setSuggestionList] = React.useState()
   const [motCle, setMotCle] = React.useState()
   const handleSearchClick = (motCle, e) => {
     e.preventDefault();
@@ -94,7 +95,8 @@ export default function RechercheClassique() {
       method: "GET",
     }).then(res => res.json())
       .then(data => {
-        setBookList(data);
+        setBookList(data.result);
+        setSuggestionList(data.suggestion)
       })
   };
 
@@ -113,25 +115,56 @@ export default function RechercheClassique() {
           </IconButton>
         </Paper>
       </div>
+
       {
-        bookList && bookList !== null ?
-          <ImageList cols={4}>
-            {bookList.map((item) => (
-              <ImageListItem key={item.img}>
-                <img
-                  src={`${item.img}?w=248&fit=crop&auto=format`}
-                  srcSet={`${item.img}?w=248&fit=crop&auto=format&dpr=2 2x`}
-                  alt={item.title}
-                  loading="lazy"
-                />
-                <ImageListItemBar className="bookInfo"
-                  title={item.title}
-                  subtitle={<span>by: {item.authors}</span>}
-                  position="below"
-                />
-              </ImageListItem>
-            ))}
-          </ImageList> : ("")
+        bookList && bookList !== null && bookList.length == 0 ?
+          <h1>Aucun livre n'a été trouvé  </h1> : ("")
+      }
+
+      {
+        bookList && bookList !== null && bookList.length !== 0 ?
+          <div><h2>Resultat de la recherche :</h2>
+            <ImageList cols={4}>
+              {bookList.map((item) => (
+                <ImageListItem key={item.img}>
+                  <img
+                    src={`${item.img}?w=248&fit=crop&auto=format`}
+                    srcSet={`${item.img}?w=248&fit=crop&auto=format&dpr=2 2x`}
+                    alt={item.title}
+                    loading="lazy"
+                  />
+                  <ImageListItemBar className="bookInfo"
+                    title={item.title}
+                    subtitle={<span>by: {item.authors}</span>}
+                    position="below"
+                  />
+                </ImageListItem>
+              ))}
+            </ImageList></div> : ("")
+      }
+
+      {
+        suggestionList && suggestionList !== null && suggestionList.length !== 0 ?
+          <div>
+            <h2>Suggestions :</h2>
+            <ImageList cols={4}>
+              {suggestionList.map((item) => (
+                <ImageListItem key={item.img}>
+                  <img
+                    src={`${item.img}?w=248&fit=crop&auto=format`}
+                    srcSet={`${item.img}?w=248&fit=crop&auto=format&dpr=2 2x`}
+                    alt={item.title}
+                    loading="lazy"
+                  />
+                  <ImageListItemBar className="bookInfo"
+                    title={item.title}
+                    subtitle={<span>by: {item.authors}</span>}
+                    position="below"
+                  />
+                </ImageListItem>
+              ))}
+            </ImageList> </div> : ("")
+
       }
     </div>
   );

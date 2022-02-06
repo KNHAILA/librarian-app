@@ -72,6 +72,7 @@ public class BinarySerialization {
     public static Map<Integer, Set<Integer>> loadGraph(File file) throws IOException {
         Kryo kryo = new Kryo();
         kryo.register(HashMap.class, new MapSerializer());
+        kryo.register(HashSet.class);
         Input input = new Input(new FileInputStream(file));
         Map<Integer, Set<Integer>> res = (Map<Integer, Set<Integer>>) kryo.readClassAndObject(input);
         input.close();

@@ -2,6 +2,7 @@ package com.sorbonne.library.service;
 
 
 import com.sorbonne.library.model.Book;
+import com.sorbonne.library.model.Result;
 import com.sorbonne.library.regexTreatments.DFA;
 import com.sorbonne.library.regexTreatments.NFA;
 import com.sorbonne.library.regexTreatments.RegEx;
@@ -9,6 +10,7 @@ import com.sorbonne.library.regexTreatments.RegExTree;
 import com.sorbonne.library.utils.BinarySerialization;
 import com.sorbonne.library.utils.BooksInformation;
 import com.sorbonne.library.utils.SortingTreatments;
+import com.sorbonne.library.utils.SuggestionTreatments;
 import javafx.util.Pair;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -25,15 +27,19 @@ import static com.sorbonne.library.config.Constants.*;
 public class AdvancedSearchImp implements AdvancedSearch{
 
     @Override
-    public List<Book> searchBooksByRegex(String regex){
+    public Result searchBooksByRegex(String regex){
+        Result result= new Result();
         HashMap<Integer,Pair<Integer,Integer>> books = new HashMap<>();
         try {
             regex = regex.toLowerCase();
+            RegEx.initializeRegEx();
             RegExTree ret = RegEx.parse(regex);
             RegEx.calculateFinalStateNumbers(ret);
-            NFA.buildNfaMatrix(ret);
-            ArrayList<int[][][]> output = DFA.makeDFA(NFA.matASCI, NFA.matInitTermEps);
-            int[][] s=DFA.simplifyNDFA(output);
+            NFA nfa= new NFA();
+            nfa.buildNfaMatrix(ret);
+            DFA dfa = new DFA();
+            ArrayList<int[][][]> output = dfa.makeDFA(nfa.matASCI, nfa.matInitTermEps);
+            int[][] s=dfa.simplifyNDFA(output);
 
             List<Thread> threads = new ArrayList<>();
             File folder = new File(ABSOLUTE_PATH+INDEXED_MAP_BOOKS);
@@ -49,7 +55,7 @@ public class AdvancedSearchImp implements AdvancedSearch{
                         try {
                             bookWords = BinarySerialization.loadBookIndexation(indexBook);
                             for(String word : bookWords.keySet()){
-                                if(RegEx.find(word+" ",s, DFA.acceptArray)){
+                                if(RegEx.find(word+" ",s, dfa.acceptArray)){
                                     match ++;
                                     occ += bookWords.get(word);
                                 }
@@ -80,6 +86,13 @@ public class AdvancedSearchImp implements AdvancedSearch{
 
         List<Book> booksFound = new ArrayList<>();
         booksFound.addAll(SortingTreatments.sortedBooksFromKeywords(BooksInformation.getBooksInfo(books)).keySet());
-        return booksFound;
+
+        result.setResult(booksFound);
+        List<Book> suggestions = BooksInformation.getBooksInfoById(SuggestionTreatments.suggestion(books.keySet()));
+        suggestions.removeAll(booksFound);
+        result.setSuggestion(suggestions);
+
+
+        return result;
     }
 }
