@@ -22,7 +22,7 @@ public class BuildBooksDatabase {
 
     public static void main(String[] args) throws IOException, JSONException {
         BuildBooksDatabase b =new BuildBooksDatabase();
-        System.out.println(b.buildDatabase(10).size());
+        System.out.println(b.buildDatabase(1660).size());
     }
 
     public ArrayList<Integer> buildDatabase(int nbBooks) throws IOException, JSONException {
